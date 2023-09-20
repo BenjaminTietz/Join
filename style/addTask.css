@@ -105,16 +105,32 @@ option {
     border-radius: 10px;
     background-color: #FFF;
     padding: 14px 14px;
-    border: 1px solid #D1D1D1;
 }
-
+.prio_svg path{
+    fill: white !important;
+}
 .prio-btn-add-task:hover {
+    -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 10px 0px rgba(0,0,0,0.5); 
+    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 10px 0px rgba(0,0,0,0.5);
     cursor: pointer;
     scale: 1.03;
 }
 
-.prio-selected {
-    border: 3px solid rgb(1, 201, 1);
+.prio-selected-urgent {
+    color: white;
+    background-color: rgb(255,61,0);
+    scale: 1.03;
+}
+
+.prio-selected-medium {
+    color: white;
+    background-color: rgb(255,168,0);
+    scale: 1.03;
+}
+
+.prio-selected-low {
+    color: white;
+    background-color: rgb(122,226,41);
     scale: 1.03;
 }
 
@@ -198,7 +214,6 @@ option {
     font-family: 'Inter', sans-serif;
     line-height: 120%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 16px;
     padding: 4px 0;
@@ -270,17 +285,73 @@ option {
     height: 26px;
 }
 
+.form-control {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1.1;
+    gap: 0.5em;
+}
 
+input[type="checkbox"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    appearance: none;
+    /* For iOS < 15 to remove gradient background */
+    background-color: #fff;
+    /* Not removed via appearance */
+    margin: 0;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid currentColor;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+    display: grid;
+    place-content: center;
+}
 
+.form-control + .form-control {
+    margin-top: 1em;
+}
 
+input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--form-control-color);
+    /* Windows High Contrast Mode */
+    background-color: CanvasText;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
 
-/* Colors for category */
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
 
+input[type="checkbox"]:focus {
+    outline: max(2px, 0.15em) solid currentColor;
+    outline-offset: max(2px, 0.15em);
+}
 
+:root {
+    --form-control-disabled: #959495;
+}
 
+input[type="checkbox"]:disabled {
+    --form-control-color: var(--form-control-disabled);
+    color: var(--form-control-disabled);
+    cursor: not-allowed;
+}
 
-
-
+.form-control--disabled {
+    color: var(--form-control-disabled);
+    cursor: not-allowed;
+}
 
 /* Responsive */
 

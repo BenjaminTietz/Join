@@ -57,13 +57,17 @@ body {
 .signUpNav button {
     display: flex;
     height: 51px;
-    padding: 4px 16px;
+    padding: 5px 10px 5px 10px;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    letter-spacing: 0.5px;
     font-size: 16px;
-
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
     border-radius: 8px;
+    border: none;
     background: #2A3647;
     color: #FFF;
 }
@@ -188,7 +192,7 @@ form h1 {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 35px;
+    gap: 30px;
 }
 
 #RememberMe {
@@ -222,35 +226,37 @@ checkbox {
 
 #logInBtn {
     display: flex;
-    width: 145px;
-    height: 51px;
-    padding: 4px 0px;
+    width: 197px;
+    height: 53px;
+    padding: 5px 10px 5px 10px;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-
+    gap: 8px;
+    letter-spacing: 0.5px;
     border-radius: 8px;
     background: #2A3647;
     color: #FFF;
-    font-size: 21px;
+    font-size: 24px;
     font-family: Inter;
     font-style: normal;
     font-weight: 700;
     line-height: 120%;
+    border: none;
 }
 
 #guestLogInBtn {
     display: flex;
-    height: 51px;
-    padding: 4px 16px;
+    width: 197px;
+    height: 53px;
+    padding: 5px 10px 5px 10px;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-
+    gap: 8px;
+    letter-spacing: 0.5px;
     border-radius: 8px;
     border: 1px solid var(--version-2-main-color, #2A3647);
     color: var(--version-2-main-color, #2A3647);
-    font-size: 21px;
+    font-size: 24px;
     font-family: Inter;
     font-style: normal;
     font-weight: 700;
@@ -387,7 +393,6 @@ checkbox {
         flex-direction: column-reverse;
         align-items: center;
         gap: 4px;
-       
     }
 
     .formBtnContainer {

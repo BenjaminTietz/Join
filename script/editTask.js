@@ -26,6 +26,7 @@ async function editTask(j) {
     setPrioEditTask(j);
     loadSubtasksEditTask(j);
     setMinimumDateToday();
+    setCheckboxStatusFromArray(j);
 };
 
 
@@ -89,7 +90,18 @@ function renderSubtasksEditTask(j) {
 function setPrioEditTask(j) {
     let selectedPrio = tasks[j]['prio'];
     let prioToSelect = document.getElementById('prio_btn_' + selectedPrio);
-    prioToSelect.classList.add('prio-selected');
+    if (selectedPrio === 'urgent'){
+        prioToSelect.classList.add('prio-selected-urgent');
+        prioToSelect.classList.add('prio_svg');
+    }
+    if (selectedPrio === 'medium'){
+        prioToSelect.classList.add('prio-selected-medium');
+        prioToSelect.classList.add('prio_svg');
+    }
+    if (selectedPrio === 'low'){
+        prioToSelect.classList.add('prio-selected-low');
+        prioToSelect.classList.add('prio_svg');
+    }
 };
 
 
@@ -173,7 +185,18 @@ function setPrioValueEditTask(j, prio) {
     tasks[j]['prio'] = prio;
     let selectedButton = document.getElementById('prio_btn_' + prio);
     resetPrioValue();
-    selectedButton.classList.add('prio-selected');
+    if (prio === 'urgent'){
+        selectedButton.classList.add('prio-selected-urgent');
+        selectedButton.classList.add('prio_svg');
+    }
+    if (prio === 'medium'){
+        selectedButton.classList.add('prio-selected-medium');
+        selectedButton.classList.add('prio_svg');
+    }
+    if (prio === 'low'){
+        selectedButton.classList.add('prio-selected-low');
+        selectedButton.classList.add('prio_svg');
+    }
 };
 
 
@@ -186,14 +209,33 @@ async function safeChangesEditTask(j) {
     let description = document.getElementById('description_form');
     let dueDate = document.getElementById('dueDate_form');
     let title = document.getElementById('title_form');
+    let checkboxes = document.querySelectorAll("input[type='checkbox']");
+    let subtaskStates = [];
+    let checkBoxStates = [];
 
     tasks[j]['category'] = category.value;
     tasks[j]['description'] = description.value;
     tasks[j]['dueDate'] = dueDate.value;
     tasks[j]['title'] = title.value;
 
+    checkboxes.forEach(function (checkbox, index) {
+        if (checkbox.checked) {
+            subtaskStates[index] = true;
+            checkBoxStates.push(true);
+        } else {
+            subtaskStates[index] = false;
+        }
+    });
+
+    // The subtasksState Array gets assigned to the subtasksDone array.
+    tasks[j]['subtasksDone'] = subtaskStates;
+    tasks[j]['subtasksDone']= checkBoxStates;
+
     await safeTasks();
 
     closeEditTask();
     initBoard();
-};
+}
+
+
+

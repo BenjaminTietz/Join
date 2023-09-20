@@ -61,16 +61,22 @@ function renderTasksBoard() {
  */
 function renderTasksBoardWithSearch(content, status, search) {
     for (let j = 0; j < tasks.length; j++) {
-        const task = tasks[j];
+        const task = tasks[j];       
         if (task['status'] == status) {
             // Check if the current task's title or description includes the search query (case-insensitive).
             if (task['title'].toLowerCase().includes(search) || task['description'].toLowerCase().includes(search)) {
                 // If the search query matches, render the single task.
-                content.innerHTML += templateSingleTask(task, j);
+                content.innerHTML += templateSingleTask(task, j, status);
+                    if (task['status'] === 'todo') {
+                        document.getElementById("statusUptodo"+j).style.display = "none";
+                    }else if (task['status'] === 'done') {
+                        document.getElementById("statusDowndone"+j).style.display = "none";
+                    };
                 // Add the member assigned to the task and their initials.
                 addMemberToSingleTask(task, j);
                 // Add the priority (prio) indicator to the single task.
                 addPrioToSingleTask(task, j);
+                removeProgressbar(j);
             };
         };
     };
@@ -89,9 +95,15 @@ function renderTasksBoardWithoutSearch(content, status) {
         // Check if the task belongs to the specified status.
         if (task['status'] == status) {
             // If the task belongs to the status, render the task on the board.
-            content.innerHTML += templateSingleTask(task, j);
+            content.innerHTML += templateSingleTask(task, j, status);
+                if (task['status'] === 'todo') {
+                    document.getElementById("statusUptodo"+j).style.display = "none";
+                }else if (task['status'] === 'done') {
+                    document.getElementById("statusDowndone"+j).style.display = "none";
+                };
             addMemberToSingleTask(task, j);
             addPrioToSingleTask(task, j);
+            removeProgressbar(j);
         };
     };
 };
@@ -205,6 +217,7 @@ function openTask(j) {
     addPrioToDetailTask(j);
     addMemberTaskDetail(j);
     addSubtasksTaskDetail(j);
+    setCheckboxStatusFromArray(j);
 };
 
 
@@ -310,6 +323,30 @@ function addSubtasksTaskDetail(j) {
 };
 
 
+function setCheckboxStatusFromArray(j) {
+    const subtaskStates = tasks[j]['subtasksDone'];
+
+    for (let i = 0; i < subtaskStates.length; i++) {
+        const checkbox = document.getElementById(`subtask_${i}`);
+        
+        if (checkbox && subtaskStates[i] === true) {
+            checkbox.checked = true;
+        } else if (checkbox) {
+            checkbox.checked = false;
+        }
+    }
+    for (let i = 0; i < subtaskStates.length; i++) {
+        const checkbox = document.getElementById(`subtask_edit_${i}`);
+        
+        if (checkbox && subtaskStates[i] === true) {
+            checkbox.checked = true;
+        } else if (checkbox) {
+            checkbox.checked = false;
+        }
+    }
+}
+
+
 /**
  * Deletes the task at the specified index (j).
  * Saves the updated tasks array to the local storage, closes the task details view, and reinitializes the board.
@@ -404,10 +441,25 @@ function searchTaskFromBoard() {
 function loadContactsToForm() {
     let content = document.getElementById('assignedTo_form');
     content.innerHTML = /*html*/`
-     <option value="" disabled selected>Select contacts</option>   
+        <option value="" disabled selected>Select contacts</option>   
     `;
     for (let i = 0; i < contacts.length; i++) {
         const contact = contacts[i];
         content.innerHTML += templateMembersChose(contact);
     };
 };
+
+/**
+ * Removes the progressbar if there is no subtask.
+ *
+ * @param {number} j - The index of the task in the 'tasks' array.
+ */
+function removeProgressbar(j) {
+    let progressbar = document.getElementById(`progressbar${j}`);
+    let subtasksDoneText = document.getElementById(`subtasksDoneText${j}`);
+
+    if (tasks[j].subtasks.length == 0) {
+        progressbar.classList.add('d-none');
+        subtasksDoneText.classList.add('d-none');
+    }
+}

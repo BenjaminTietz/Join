@@ -18,6 +18,18 @@ let tasks = [];
 let subtasks = [];
 
 /**
+ * An array to store number of done subtasks.
+ * @type {Array}
+ */
+let subtasksDone = [];
+
+/**
+ * An array to store state of the subtasks checkboxes.
+ * @type {Array}
+ */
+let subtasksCheckboxState = [];
+
+/**
  * An array to store assigned members.
  * @type {Array}
  */
@@ -71,8 +83,10 @@ let colorsAssignedTo = [];
  * @param {string} status - The status of the task.
  * @param {Array} colors - The colors of assigned members.
  * @param {Array} initialsMembers - The initials of assigned members.
+ * @param {Array} subtasksDone - Number of checked aka done subtasks.
+ * * @param {Array} subtasksCheckboxState - State of checked subtask checkboxes.
  */
-function pushTaskToArray(title, description, category, member, dueDate, prio, subtasks, status, colors, initialsMembers) {
+function pushTaskToArray(title, description, category, member, dueDate, prio, subtasks, status, colors, initialsMembers, subtasksDone, subtasksCheckboxState) {
     tasks.push({
         'title': title,
         'description': description,
@@ -81,6 +95,8 @@ function pushTaskToArray(title, description, category, member, dueDate, prio, su
         'dueDate': dueDate,
         'prio': prio,
         'subtasks': subtasks,
+        'subtasksDone': subtasksDone,
+        'subtasksCheckboxState': subtasksCheckboxState,
         'status': status,
         'initials': initialsMembers,
         'colors': colors,
@@ -127,7 +143,6 @@ async function initAddTask() {
     await loadContactsToForm();
     pushMemberToArrayAssignedTo();
     pushColorToArrayAssignedTo();
-    //loadUserData();
     setDateToday();
     setMinimumDateToday();
 };
@@ -165,7 +180,18 @@ function setPrioValue(prio) {
     document.getElementById('prio_hidden').value = prio;
     let selectedButton = document.getElementById('prio_btn_' + prio);
     resetPrioValue();
-    selectedButton.classList.add('prio-selected');
+    if (prio === 'urgent'){
+        selectedButton.classList.add('prio-selected-urgent');
+        selectedButton.classList.add('prio_svg');
+    }
+    if (prio === 'medium'){
+        selectedButton.classList.add('prio-selected-medium');
+        selectedButton.classList.add('prio_svg');
+    }
+    if (prio === 'low'){
+        selectedButton.classList.add('prio-selected-low');
+        selectedButton.classList.add('prio_svg');
+    }
 };
 
 
@@ -173,9 +199,12 @@ function setPrioValue(prio) {
  * Function to reset the priority value.
  */
 function resetPrioValue() {
-    document.getElementById('prio_btn_urgent').classList.remove('prio-selected');
-    document.getElementById('prio_btn_medium').classList.remove('prio-selected');
-    document.getElementById('prio_btn_low').classList.remove('prio-selected');
+    document.getElementById('prio_btn_urgent').classList.remove('prio-selected-urgent');
+    document.getElementById('prio_btn_urgent').classList.remove('prio_svg');
+    document.getElementById('prio_btn_medium').classList.remove('prio-selected-medium');
+    document.getElementById('prio_btn_medium').classList.remove('prio_svg');
+    document.getElementById('prio_btn_low').classList.remove('prio-selected-low');
+    document.getElementById('prio_btn_low').classList.remove('prio_svg');
 };
 
 
@@ -186,6 +215,22 @@ function resetSubtaskArray() {
     subtasks = [];
     document.getElementById('container_subtasks').innerHTML = '';
 };
+
+
+/**
+ * Function to reset the resetSubtaskDoneArray array.
+ */
+function resetSubtaskDoneArray() {
+    subtasksDone = [];
+};
+
+
+/**
+ * Function to reset the resetSubtaskDoneArray array.
+ */
+function resetSubtasksCheckboxStateArray() {
+    subtasksCheckboxState = [];
+}
 
 
 /**
@@ -235,16 +280,18 @@ async function addTask(setStatus) {
     let dueDate = document.getElementById('dueDate_form').value;
     let prio = document.getElementById('prio_hidden').value;
     let subtasks_task = subtasks;
+    let subtasks_done = subtasksDone;
     let status = setStatus;
     let colors = assignedToColors;
     let initialsMembers = assignedToInitials;
 
     if (title != '' && category != '' && assignedTo != '' && dueDate != '') {
-        pushTaskToArray(title, description, category, member, dueDate, prio, subtasks_task, status, colors, initialsMembers);
+        pushTaskToArray(title, description, category, member, dueDate, prio, subtasks_task, status, colors, initialsMembers, subtasks_done);
         await safeTasks();
         document.getElementById('form_add_task').reset();
         resetPrioValue();
         resetSubtaskArray();
+        resetSubtaskDoneArray();
         resetAssignedTo();
         resetAssignedToArrays();
         taskAddedPopUp();
@@ -311,6 +358,8 @@ function resetAssignedTo() {
 function resetAssignedToArrays() {
     resetAssignedTo();
     resetSubtaskArray();
+    resetSubtaskDoneArray();
+    resetSubtasksCheckboxStateArray()
     resetPrioValue();
     resetAssignedToInitials();
     resetAssignedToColors();

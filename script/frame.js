@@ -80,6 +80,7 @@ function renderSubmenuMobile() {
         <div class="submenu">
             <a href="../html/help.html">Help</a>
             <a href="../html/legal_notice.html">Legal Notice</a>
+            <a href="../html/privacy_police.html">Privacy Police</a>
             <a href="../html/index.html">Log out</a>
         </div >
     `;
