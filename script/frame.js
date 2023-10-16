@@ -32,7 +32,7 @@ async function includeHtml() {
  * Function to navigate to the summary page.
  */
 function toSummary() {
-    window.location.href = '../html/summary.html';
+    window.location.href = '../summary.html';
 };
 
 
