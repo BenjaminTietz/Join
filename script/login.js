@@ -22,5 +22,5 @@ function removeLandingImg() {
     landingImg.classList.add('d-none');
 
     // Redirect the user to the login page
-    window.location.href = '../html/login.html';
+    window.location.href = '../login.html';
 };
